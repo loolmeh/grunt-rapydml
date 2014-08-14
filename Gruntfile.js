@@ -34,12 +34,48 @@ module.exports = function (grunt) {
     // Configuration to be run (and then tested).
     rapydml: {
         compile: {
-            files: {
-                src: ['test/fixtures/test.pyml'],
-            }
+            files: [
+                {src: ['test/fixtures/*.pyml'], expand: true}
+            ]
         }
    },
-        // Unit tests.
+
+    rapydscript: {
+        options: {
+            prettify: true,
+            stats: true,
+            verbose: true
+        },
+        compile: {
+            files: [
+                {
+                  expand: true,     
+                  src: ['*/*.pyj', '*.pyj'],
+                },
+            ],
+        }
+   },
+
+    // sample usage with grunt-contrib-watch
+    watch: {
+      pyml: {
+        files: ['*.pyml', '**/*.pyml'],
+        tasks: ['rapydml'],
+        options: {
+          spawn: false,
+        },
+      },
+      pyj: {
+        files: ['*.pyj', '**/*.pyj'],
+        tasks: ['rapydscript'],
+        options: {
+          spawn: false,
+        },
+      },
+    },
+
+    
+    // Unit tests.
     nodeunit: {
       tests: ['test/*_test.js']
     },
